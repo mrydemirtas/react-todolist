@@ -9,34 +9,28 @@ class App extends Component {
     super(props);
 
     this.state = {
-      todos: [
-        {id:0, text: "Make dinner tonight!"},
-        {id:1, text: "Fold the laundry"},
-        {id:2, text: "Learn to make a React app!"},
-      ],
-      nextId:3
+      todos: JSON.parse(localStorage.getItem('todolist')),
     }
-
     this.addTodo = this.addTodo.bind(this);
     this.removeTodo =this.removeTodo.bind(this);
   }
 
   addTodo(todoText) {
-    let todos = this.state.todos.slice();
-    todos.push({id: this.state.nextId, text: todoText});
+    let todos = this.state.todos
+    todos.push({id: Math.random(), text: todoText});
     this.setState({
       todos:todos,
-      nextId:++this.setState.nextId
     });
+    localStorage.setItem('todolist', JSON.stringify(this.state.todos))
   }
 
-  removeTodo(id) {
-    this.setState({
-      todos:this.state.todos.filter((todo, index) => todo.id !== id)
-    })
- 
+  removeTodo(todo) {
+    let todos = this.state.todos
+    const id = todo.id
+    todos.splice(id, 1);
+    localStorage.setItem('todolist', JSON.stringify(this.state.todos))
   }
-  
+
   render() { 
   return ( 
     <div className="App">
